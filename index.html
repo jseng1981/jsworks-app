@@ -32,8 +32,19 @@ html,body{margin:0;height:100%;background:#f4f2ec;overflow:hidden}
 (function(){
   var u = window.JSW_APP_URL || '', f = document.getElementById('app'), s = document.getElementById('splash'), m = document.getElementById('msg');
   if (!/^https:\/\/script\.google\.com\/(a\/[^/]+\/)?macros\/s\/[\w-]+\/exec/.test(u)) { m.innerHTML = '앱 주소가 아직 설정되지 않았습니다.<br>관리자: config.js 에 웹 앱 주소(/exec)를 넣어 주세요.'; s.querySelector('.bar').style.display = 'none'; return; }
-  var q = location.search.replace(/^\?/, '').split('&').filter(function(p){ return p && !/^src=/.test(p); }).join('&');
-  f.src = u + (q ? '?' + q : '') + location.hash;
+  var q = location.search.replace(/^\?/, '').split('&').filter(function(p){ return p && !/^src=/.test(p); }).join('&'), dst = u + (q ? '?' + q : '') + location.hash;
+  if (window.JSW_MODE === 'open') { location.replace(dst); return; }
+  // 구글 계정이 여러 개 로그인돼 있어도 열리도록: 시스템을 구글 로그인 정보 없이(시크릿 창처럼) 띄움 (크롬 · 엣지)
+  if (window.JSW_CRED !== false) f.setAttribute('credentialless', '');
+  // 시스템 로그인 토큰을 이 앱에 보관 (시크릿처럼 띄우면 시스템 쪽 저장소가 매번 비워지므로)
+  window.addEventListener('message', function(e){
+    if (!/^https:\/\/[\w.-]+\.googleusercontent\.com$/.test(e.origin)) return;
+    var d = e.data || {}; try {
+      if (d.jsw === 'need-token') e.source.postMessage({jsw: 'token', t: localStorage.getItem('jsw_tok') || ''}, e.origin);
+      else if (d.jsw === 'save-token') { if (d.t) localStorage.setItem('jsw_tok', d.t); else localStorage.removeItem('jsw_tok'); }
+    } catch (x) {}
+  });
+  f.src = dst;
   var done = function(){ s.classList.add('hide'); setTimeout(function(){ s.style.display = 'none'; }, 400); };
   f.addEventListener('load', function(){ setTimeout(done, 600); });
   setTimeout(function(){ if (s.style.display !== 'none') m.innerHTML = '연결이 느립니다… 잠시만 기다려 주세요.<br><a href="' + u + '" target="_blank" rel="noopener">브라우저로 열기</a>'; }, 12000);
