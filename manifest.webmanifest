@@ -1,0 +1,19 @@
+{
+  "name": "J&S Works",
+  "short_name": "J&S Works",
+  "description": "J&S 엔지니어링 업무 시스템",
+  "id": "./",
+  "start_url": "./?src=app",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "orientation": "any",
+  "lang": "ko",
+  "background_color": "#f4f2ec",
+  "theme_color": "#136f78",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}

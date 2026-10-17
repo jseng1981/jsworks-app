@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J&amp;S Works 앱 설치</title>
+<meta name="theme-color" content="#136f78">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<script src="config.js"></script>
+<style>
+:root{--bg:#f4f2ec;--card:#fff;--line:#e4e0d6;--fg:#1d2a2b;--mut:#5d6664;--ac:#136f78;--acs:#e3f1f2}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;line-height:1.6}
+main{max-width:720px;margin:0 auto;padding:28px 16px 48px;display:flex;flex-direction:column;gap:14px}
+header{display:flex;align-items:center;gap:14px}header img{width:64px;height:64px;border-radius:16px}h1{margin:0;font-size:24px}header p{margin:2px 0 0;color:var(--mut);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.card h2{margin:0 0 10px;font-size:17px;display:flex;align-items:center;gap:8px}
+.card.me{border:2px solid var(--ac);box-shadow:0 8px 24px rgba(19,111,120,.12)}
+.tag{font-size:12px;font-weight:700;background:var(--acs);color:var(--ac);padding:2px 9px;border-radius:99px}
+ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+b.k{background:#f0ede6;border:1px solid var(--line);border-radius:6px;padding:0 6px;font-weight:700;white-space:nowrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;background:var(--ac);color:#fff;font:inherit;font-weight:700;font-size:16px;padding:14px 22px;border-radius:14px;min-height:48px;text-decoration:none;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--ac);border:1px solid var(--ac)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.note{font-size:13px;color:var(--mut)}
+#done{display:none}
+</style>
+</head>
+<body>
+<main>
+  <header><img src="icons/icon-192.png" alt=""><div><h1>J&amp;S Works 앱 설치</h1><p>한 번만 설치하면 됩니다. 업데이트는 자동으로 됩니다.</p></div></header>
+
+  <div class="card" id="quick"><h2>바로 설치</h2>
+    <div class="row"><button type="button" class="btn" id="inst" hidden>앱 설치하기</button><a class="btn ghost" href="./">설치 없이 열기</a></div>
+    <p class="note" id="instNote">아래에서 내 기기에 맞는 방법을 따라 하세요.</p>
+    <p class="note" id="done">✓ 이미 앱으로 실행 중입니다.</p></div>
+
+  <section class="card" data-dev="android"><h2>안드로이드 휴대폰 <span class="tag" hidden>내 기기</span></h2><ol>
+    <li><b>크롬</b>으로 이 페이지(app.jsec.co.kr)를 엽니다.</li>
+    <li>위의 <b class="k">앱 설치하기</b> 버튼을 누르거나, 오른쪽 위 <b class="k">⋮</b> → <b class="k">앱 설치</b> (또는 <b class="k">홈 화면에 추가</b>)</li>
+    <li>홈 화면의 <b>J&amp;S Works</b> 아이콘으로 엽니다.</li></ol>
+    <p class="note">삼성 인터넷: 아래 <b class="k">≡</b> → <b class="k">현재 페이지 추가</b> → <b class="k">홈 화면</b></p></section>
+
+  <section class="card" data-dev="ios"><h2>아이폰 · 아이패드 <span class="tag" hidden>내 기기</span></h2><ol>
+    <li><b>사파리</b>로 이 페이지를 엽니다. (카카오톡에서 열었다면 오른쪽 아래 <b class="k">⋯</b> → <b class="k">Safari로 열기</b>)</li>
+    <li>아래 가운데 <b class="k">공유 □↑</b> 버튼 → 아래로 내려 <b class="k">홈 화면에 추가</b></li>
+    <li>오른쪽 위 <b class="k">추가</b> → 홈 화면의 <b>J&amp;S Works</b> 아이콘으로 엽니다.</li></ol></section>
+
+  <section class="card" data-dev="pc"><h2>PC (윈도우 · 맥) <span class="tag" hidden>내 기기</span></h2><ol>
+    <li><b>크롬</b> 또는 <b>엣지</b>로 이 페이지를 엽니다.</li>
+    <li>주소창 오른쪽의 <b class="k">설치 ⊕</b> 아이콘 → <b class="k">설치</b><br><span class="note">아이콘이 안 보이면: 크롬 <b class="k">⋮</b> → <b class="k">전송, 저장, 공유</b> → <b class="k">페이지를 앱으로 설치</b> / 엣지 <b class="k">⋯</b> → <b class="k">앱</b> → <b class="k">이 사이트를 앱으로 설치</b></span></li>
+    <li>바탕화면 · 시작 메뉴(맥은 Launchpad · Dock)의 <b>J&amp;S Works</b> 아이콘으로 엽니다.</li></ol>
+    <p class="note">맥 사파리: 메뉴 <b class="k">파일</b> → <b class="k">Dock에 추가</b></p></section>
+
+  <div class="card"><h2>알아 두세요</h2><ol>
+    <li>앱에서 <b>처음 한 번 로그인</b>합니다 (기기마다 따로).</li>
+    <li>시스템이 업데이트되면 <b>앱을 다시 열기만 하면</b> 최신 화면입니다. 새 링크를 받을 필요가 없습니다.</li>
+    <li>사진 촬영 · 녹음을 처음 쓸 때 <b>권한 허용</b>을 물으면 "허용"을 누르세요.</li>
+    <li>화면이 이상하면 앱을 완전히 닫았다가 다시 여세요.</li></ol></div>
+</main>
+<script>
+(function(){
+  var ua=navigator.userAgent,dev=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)?'ios':/Android/.test(ua)?'android':'pc';
+  var me=document.querySelector('[data-dev="'+dev+'"]');if(me){me.classList.add('me');me.querySelector('.tag').hidden=false;me.parentNode.insertBefore(me,document.getElementById('quick').nextSibling)}
+  var st=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone;if(st){document.getElementById('done').style.display='block';document.getElementById('instNote').style.display='none'}
+  var ev=null,b=document.getElementById('inst');
+  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();ev=e;b.hidden=false;document.getElementById('instNote').textContent='버튼을 누르면 바로 설치됩니다.'});
+  b.addEventListener('click',function(){if(!ev)return;ev.prompt();ev.userChoice.then(function(){ev=null;b.hidden=true})});
+  window.addEventListener('appinstalled',function(){document.getElementById('instNote').textContent='✓ 설치했습니다. 홈 화면(바탕화면)의 아이콘으로 여세요.'});
+  if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js?v='+(window.JSW_SHELL||'1')).catch(function(){});
+})();
+</script>
+</body>
+</html>
