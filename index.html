@@ -42,6 +42,11 @@ html,body{margin:0;height:100%;background:#f4f2ec;overflow:hidden}
     var d = e.data || {}; try {
       if (d.jsw === 'need-token') e.source.postMessage({jsw: 'token', t: localStorage.getItem('jsw_tok') || ''}, e.origin);
       else if (d.jsw === 'save-token') { if (d.t) localStorage.setItem('jsw_tok', d.t); else localStorage.removeItem('jsw_tok'); }
+      else if (d.jsw === 'need-mic') { // 앱 안(iframe)에서 마이크가 막히면 앱 껍데기가 직접 권한을 물어봄
+        var src = e.source, org = e.origin, rep = function(ok, err){ try { src.postMessage({jsw: 'mic', ok: ok, err: err || ''}, org); } catch (x) {} };
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) rep(false, 'nodev');
+        else navigator.mediaDevices.getUserMedia({audio: true}).then(function(st){ st.getTracks().forEach(function(t){ t.stop(); }); rep(true); }, function(er){ rep(false, (er && er.name) || 'err'); });
+      }
     } catch (x) {}
   });
   f.src = dst;
