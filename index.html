@@ -42,6 +42,8 @@ html,body{margin:0;height:100%;background:#f4f2ec;overflow:hidden}
     var d = e.data || {}; try {
       if (d.jsw === 'need-token') e.source.postMessage({jsw: 'token', t: localStorage.getItem('jsw_tok') || ''}, e.origin);
       else if (d.jsw === 'save-token') { if (d.t) localStorage.setItem('jsw_tok', d.t); else localStorage.removeItem('jsw_tok'); }
+      else if (d.jsw === 'mic-start') micStart(e.source, e.origin);
+      else if (d.jsw === 'mic-stop') micStop();
       else if (d.jsw === 'need-mic') { // 앱 안(iframe)에서 마이크가 막히면 앱 껍데기가 직접 권한을 물어봄
         var src = e.source, org = e.origin, rep = function(ok, err){ try { src.postMessage({jsw: 'mic', ok: ok, err: err || ''}, org); } catch (x) {} };
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) rep(false, 'nodev');
@@ -49,6 +51,22 @@ html,body{margin:0;height:100%;background:#f4f2ec;overflow:hidden}
       }
     } catch (x) {}
   });
+  // 구글 화면이 앱 안에서 마이크를 못 쓰게 막는 경우: 이 창(앱 껍데기)이 마이크를 열고 소리를 시스템 화면으로 넘겨 줌
+  var MS = null;
+  function micStop(){ if (!MS) return; var m = MS; MS = null; try { m.node.disconnect(); m.src.disconnect(); } catch (x) {} try { m.st.getTracks().forEach(function(t){ t.stop(); }); } catch (x) {} try { m.ctx.close(); } catch (x) {} }
+  function micStart(win, org){
+    micStop(); var AC = window.AudioContext || window.webkitAudioContext;
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !AC) { win.postMessage({jsw: 'mic-started', ok: false, err: 'nodev'}, org); return; }
+    navigator.mediaDevices.getUserMedia({audio: {echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1}}).then(function(st){
+      var ctx = new AC(), src = ctx.createMediaStreamSource(st), node = ctx.createScriptProcessor(4096, 1, 1);
+      node.onaudioprocess = function(ev){ var d = new Float32Array(ev.inputBuffer.getChannelData(0)); try { win.postMessage({jsw: 'mic-data', sr: ctx.sampleRate, d: d}, org, [d.buffer]); } catch (x) { micStop(); } };
+      src.connect(node); node.connect(ctx.destination); if (ctx.state === 'suspended') ctx.resume();
+      MS = {st: st, ctx: ctx, src: src, node: node};
+      st.getTracks().forEach(function(t){ t.addEventListener('ended', micStop); });
+      win.postMessage({jsw: 'mic-started', ok: true, sr: ctx.sampleRate}, org);
+    }, function(er){ win.postMessage({jsw: 'mic-started', ok: false, err: (er && er.name) || 'err'}, org); });
+  }
+  window.addEventListener('pagehide', micStop);
   f.src = dst;
   var done = function(){ s.classList.add('hide'); setTimeout(function(){ s.style.display = 'none'; }, 400); };
   f.addEventListener('load', function(){ setTimeout(done, 600); });
